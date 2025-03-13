@@ -5,6 +5,7 @@
 
 #include "pong.hpp"
 #include "utils.hpp"
+#include "player.hpp"
 
 Pong::Pong()
 :window(NULL), renderer(NULL) 
@@ -47,8 +48,10 @@ void Pong::execute()
     SDL_Event event;
     gameOver = false;
 
+    // game loop
     while (!gameOver)
     {
+        // input handling
         while (SDL_PollEvent(&event))
         {
             switch (event.type)
@@ -62,6 +65,15 @@ void Pong::execute()
                 break;
             }
         }
+
+        // rendering
+        SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
+        SDL_RenderClear(renderer);
+
+        Player player;
         
+        player.render(renderer);
+
+        SDL_RenderPresent(renderer);
     }
 }
