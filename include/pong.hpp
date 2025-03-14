@@ -8,17 +8,22 @@
 
 class Pong
 {
-public:
+  public:
     Pong();
     ~Pong();
 
     void execute();
+    void objectsSetup();
     void renderObjects();
     void handleInputs();
-private:
+
+  private:
     SDL_Window *m_window;
     SDL_Renderer *m_renderer;
+
     Player m_player;
-    std::string error;
-    bool gameOver;
+    Player m_bot;
+
+    bool m_gameOver;
+    int m_screenWidth, m_screenHeight;
 };
