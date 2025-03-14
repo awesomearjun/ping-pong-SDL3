@@ -4,6 +4,8 @@
 #include <SDL3/SDL_video.h>
 #include <string>
 
+#include "player.hpp"
+
 class Pong
 {
 public:
@@ -11,10 +13,12 @@ public:
     ~Pong();
 
     void execute();
-    void render();
+    void renderObjects();
+    void handleInputs();
 private:
-    SDL_Window *window;
-    SDL_Renderer *renderer;
+    SDL_Window *m_window;
+    SDL_Renderer *m_renderer;
+    Player m_player;
     std::string error;
     bool gameOver;
 };

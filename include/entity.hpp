@@ -11,10 +11,8 @@ public:
     Entity() = default;
     ~Entity() = default;
 
-
-    Vector2f getPosition();
+    Vector2f position;
 protected:
     void renderRect(SDL_Renderer *p_renderer, SDL_Rect *p_sprite);
 
-    Vector2f position;
 };
