@@ -1,9 +1,18 @@
 #include "entity.hpp"
 
-#include <SDL3/SDL_render.h>
 #include <SDL3/SDL_rect.h>
+#include <SDL3/SDL_render.h>
 
 #include "utils.hpp"
+
+Entity::Entity()
+{
+    position.x = 0;
+    position.y = 0;
+
+    size.x = 0;
+    size.y = 0;
+}
 
 void Entity::renderRect(SDL_Renderer *p_renderer, SDL_Rect *p_sprite)
 {

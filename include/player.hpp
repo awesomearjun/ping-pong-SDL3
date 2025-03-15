@@ -6,11 +6,12 @@
 
 class Player : public Entity
 {
-public:
-    Player(/* args */) = default;
+  public:
+    Player() = default;
     ~Player() = default;
 
     void render(SDL_Renderer *p_renderer);
-private:
+
+  private:
     /* data */
 };

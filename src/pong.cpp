@@ -2,12 +2,14 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_render.h>
+#include <ostream>
 #include <string>
 
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_video.h"
 #include "player.hpp"
 #include "utils.hpp"
+#include <iostream>
 
 Pong::Pong() : m_window(NULL), m_renderer(NULL)
 {
@@ -17,6 +19,7 @@ Pong::Pong() : m_window(NULL), m_renderer(NULL)
     }
 
     m_window = SDL_CreateWindow("SDL3 Ping Pong", 800, 600, SDL_WINDOW_RESIZABLE);
+    SDL_SetWindowMinimumSize(m_window, 729, 484);
 
     if (m_window == NULL)
     {
@@ -59,20 +62,23 @@ void Pong::execute()
 
 void Pong::objectsSetup()
 {
+    SDL_GetWindowSizeInPixels(m_window, &m_screenWidth, &m_screenHeight);
+
     // Set sizes
-    m_player.size.x = 30;
-    m_player.size.y = 120;
-    m_bot.size.x = 30;
-    m_bot.size.y = 120;
+    m_player.size.x = 30 * (m_screenWidth / 700);
+    m_player.size.y = (50 * m_screenHeight) / 200;
+    m_bot.size.x = 30 * (m_screenWidth / 700);
+    m_bot.size.y = (50 * m_screenHeight) / 200;
 
     // Set initial positions
-    SDL_GetWindowSizeInPixels(m_window, &m_screenWidth, &m_screenHeight);
     m_player.position.x = 0;
     m_bot.position.x = m_screenWidth - m_bot.size.x;
 
     // Render in middle
     m_player.position.y = (m_screenHeight / 2) - (m_player.size.y / 2);
     m_bot.position.y = (m_screenHeight / 2) - (m_bot.size.y / 2);
+
+    m_bot.position.print();
 }
 
 void Pong::handleInputs()
@@ -87,7 +93,7 @@ void Pong::handleInputs()
             m_gameOver = true;
             break;
         case SDL_EVENT_WINDOW_RESIZED:
-            SDL_GetWindowSizeInPixels(m_window, &m_screenWidth, NULL);
+            SDL_GetWindowSizeInPixels(m_window, &m_screenWidth, &m_screenHeight);
             objectsSetup();
             break;
 
@@ -112,6 +118,36 @@ void Pong::handleInputs()
 
     // TODO: Add deltatime
     m_player.position += playerVelocity * playerDirection;
+    m_player.position.print();
+
+    clampPositions();
+}
+
+void Pong::clampPositions()
+{
+    // Remove if don't want to add special stuffs
+    // Player size == bot size
+    uint32_t relativeHeightPlayer = m_screenHeight - m_player.size.y;
+    uint32_t relativeHeightBot = m_screenHeight - m_bot.size.y;
+
+    if (m_player.position.y <= 0)
+    {
+        std::cout << m_player.position.y << std::endl;
+        m_player.position.y = 0;
+    }
+    if (m_player.position.y > relativeHeightPlayer)
+    {
+        std::cout << relativeHeightPlayer << ", " << m_player.size.y << std::endl;
+        m_player.position.y = relativeHeightPlayer;
+    }
+    if (m_bot.position.y > 0)
+    {
+        m_bot.position.y = 0;
+    }
+    if (m_bot.position.y > relativeHeightBot)
+    {
+        m_bot.position.y = relativeHeightBot;
+    }
 }
 
 void Pong::renderObjects()

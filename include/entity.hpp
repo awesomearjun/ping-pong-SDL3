@@ -8,7 +8,7 @@
 class Entity
 {
   public:
-    Entity() = default;
+    Entity();
     ~Entity() = default;
 
     Vector2f position;
