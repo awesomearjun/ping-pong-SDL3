@@ -2,14 +2,12 @@
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_render.h>
-#include <ostream>
 #include <string>
 
 #include "SDL3/SDL_events.h"
 #include "SDL3/SDL_video.h"
 #include "player.hpp"
 #include "utils.hpp"
-#include <iostream>
 
 Pong::Pong() : m_window(NULL), m_renderer(NULL)
 {
@@ -118,35 +116,22 @@ void Pong::handleInputs()
 
     // TODO: Add deltatime
     m_player.position += playerVelocity * playerDirection;
-    m_player.position.print();
 
-    clampPositions();
+    clampPosition(m_player);
+    clampPosition(m_bot);
 }
 
-void Pong::clampPositions()
+void Pong::clampPosition(Entity &p_entity)
 {
-    // Remove if don't want to add special stuffs
-    // Player size == bot size
-    uint32_t relativeHeightPlayer = m_screenHeight - m_player.size.y;
-    uint32_t relativeHeightBot = m_screenHeight - m_bot.size.y;
+    uint32_t relativeHeight = m_screenHeight - p_entity.size.y;
 
-    if (m_player.position.y <= 0)
+    if (p_entity.position.y <= 0)
     {
-        std::cout << m_player.position.y << std::endl;
-        m_player.position.y = 0;
+        p_entity.position.y = 0;
     }
-    if (m_player.position.y > relativeHeightPlayer)
+    if (p_entity.position.y > relativeHeight)
     {
-        std::cout << relativeHeightPlayer << ", " << m_player.size.y << std::endl;
-        m_player.position.y = relativeHeightPlayer;
-    }
-    if (m_bot.position.y > 0)
-    {
-        m_bot.position.y = 0;
-    }
-    if (m_bot.position.y > relativeHeightBot)
-    {
-        m_bot.position.y = relativeHeightBot;
+        p_entity.position.y = relativeHeight;
     }
 }
 

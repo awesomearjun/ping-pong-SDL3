@@ -17,7 +17,7 @@ class Pong
     void objectsSetup();
     void renderObjects();
     void handleInputs();
-    void clampPositions();
+    void clampPosition(Entity &p_entity);
     SDL_Window *m_window;
     SDL_Renderer *m_renderer;
 
