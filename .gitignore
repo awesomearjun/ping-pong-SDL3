@@ -2,5 +2,6 @@
 .cache
 build
 .DS_Store
-vendor
+vendor/SDL
+vendor/SDL_image
 .clang-format
