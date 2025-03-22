@@ -5,3 +5,5 @@ project(SDL3_PingPong)
 
 add_subdirectory(src)
 add_subdirectory(vendor)
+
+file(COPY res DESTINATION ${CMAKE_BINARY_DIR})

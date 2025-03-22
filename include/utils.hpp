@@ -2,6 +2,6 @@
 
 namespace Utils
 {
-    void LogSDLError(std::string stringToLog);    
-    void LogError(std::string stringToLog);
-}
+void LogSDLError(std::string p_stringToLog);
+void LogError(std::string p_stringToLog);
+} // namespace Utils

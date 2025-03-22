@@ -5,16 +5,22 @@
 #include <stdexcept>
 #include <string>
 
-void Utils::LogSDLError(std::string stringToLog)
+void Utils::LogSDLError(std::string p_stringToLog)
 {
-    std::string error = stringToLog;
+    std::string error = "\n[ERROR] ";
+    error += p_stringToLog;
+    error += ": ";
     error += SDL_GetError();
+    error += "\n";
 
     SDL_Log("%s", error.c_str());
     throw std::runtime_error(error);
 }
 
-void Utils::LogError(std::string stringToLog)
+void Utils::LogError(std::string p_stringToLog)
 {
-    throw std::runtime_error(stringToLog);
+    std::string error = "\n[ERROR] ";
+    error += p_stringToLog;
+    error += "\n";
+    throw std::runtime_error(error);
 }

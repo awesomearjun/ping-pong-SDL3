@@ -1,17 +1,17 @@
 #pragma once
 
-#include "entity.hpp"
+#include "vector.hpp"
 
 #include <SDL3/SDL_render.h>
 
-class Player : public Entity
+class Player
 {
   public:
-    Player() = default;
+    Player();
     ~Player() = default;
 
     void render(SDL_Renderer *p_renderer);
 
-  private:
-    /* data */
+    Vector2f position;
+    Vector2f size;
 };

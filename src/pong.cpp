@@ -1,11 +1,12 @@
 #include "pong.hpp"
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_events.h>
 #include <SDL3/SDL_render.h>
+#include <SDL3/SDL_video.h>
 #include <string>
 
-#include "SDL3/SDL_events.h"
-#include "SDL3/SDL_video.h"
+#include "ball.hpp"
 #include "player.hpp"
 #include "utils.hpp"
 
@@ -58,27 +59,6 @@ void Pong::execute()
     }
 }
 
-void Pong::objectsSetup()
-{
-    SDL_GetWindowSizeInPixels(m_window, &m_screenWidth, &m_screenHeight);
-
-    // Set sizes
-    m_player.size.x = 30 * (m_screenWidth / 700);
-    m_player.size.y = (50 * m_screenHeight) / 200;
-    m_bot.size.x = 30 * (m_screenWidth / 700);
-    m_bot.size.y = (50 * m_screenHeight) / 200;
-
-    // Set initial positions
-    m_player.position.x = 0;
-    m_bot.position.x = m_screenWidth - m_bot.size.x;
-
-    // Render in middle
-    m_player.position.y = (m_screenHeight / 2) - (m_player.size.y / 2);
-    m_bot.position.y = (m_screenHeight / 2) - (m_bot.size.y / 2);
-
-    m_bot.position.print();
-}
-
 void Pong::handleInputs()
 {
     SDL_Event event;
@@ -121,20 +101,6 @@ void Pong::handleInputs()
     clampPosition(m_bot);
 }
 
-void Pong::clampPosition(Entity &p_entity)
-{
-    uint32_t relativeHeight = m_screenHeight - p_entity.size.y;
-
-    if (p_entity.position.y <= 0)
-    {
-        p_entity.position.y = 0;
-    }
-    if (p_entity.position.y > relativeHeight)
-    {
-        p_entity.position.y = relativeHeight;
-    }
-}
-
 void Pong::renderObjects()
 {
     SDL_SetRenderDrawColor(m_renderer, 0x00, 0x00, 0x00, 0x00);
@@ -142,6 +108,47 @@ void Pong::renderObjects()
 
     m_player.render(m_renderer);
     m_bot.render(m_renderer);
+    m_ball.render(m_renderer);
 
     SDL_RenderPresent(m_renderer);
+}
+
+void Pong::objectsSetup()
+{
+    SDL_GetWindowSizeInPixels(m_window, &m_screenWidth, &m_screenHeight);
+
+    float screenHeightFloat = static_cast<float>(m_screenHeight);
+    float screenWidthFloat = static_cast<float>(m_screenWidth);
+
+    // Set sizes
+    m_player.size.x = 30 * (screenWidthFloat / 700);
+    m_player.size.y = (50 * screenHeightFloat) / 200;
+    m_bot.size.x = 30 * (screenWidthFloat / 700);
+    m_bot.size.y = (50 * screenHeightFloat) / 200;
+    m_ball.size.x = screenWidthFloat / 50;
+    m_ball.size.y = screenHeightFloat / 50;
+
+    // Set initial positions
+    m_player.position.x = 0;
+    m_bot.position.x = m_screenWidth - m_bot.size.x;
+    m_ball.position.x = screenHeightFloat / 2;
+
+    // Render in middle
+    m_player.position.y = (screenHeightFloat / 2) - (m_player.size.y / 2);
+    m_bot.position.y = (screenHeightFloat / 2) - (m_bot.size.y / 2);
+    m_ball.position.y = 50;
+}
+
+void Pong::clampPosition(Player &p_player)
+{
+    uint32_t relativeHeight = m_screenHeight - p_player.size.y;
+
+    if (p_player.position.y <= 0)
+    {
+        p_player.position.y = 0;
+    }
+    if (p_player.position.y > relativeHeight)
+    {
+        p_player.position.y = relativeHeight;
+    }
 }

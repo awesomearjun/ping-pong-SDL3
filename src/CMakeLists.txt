@@ -2,9 +2,9 @@ set(SRCS
     main.cpp
     pong.cpp
     utils.cpp
-    entity.cpp
     vector.cpp
     player.cpp
+    ball.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SRCS})
