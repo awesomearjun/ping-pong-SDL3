@@ -54,8 +54,13 @@ void Pong::execute()
 
     while (!m_gameOver)
     {
+        float buffer1 = SDL_GetTicks();
+
         handleInputs();
         renderObjects();
+
+        float buffer2 = SDL_GetTicks();
+        dt = buffer2 - buffer1;
     }
 }
 
@@ -81,8 +86,8 @@ void Pong::handleInputs()
     }
 
     const bool *currentKeySates = SDL_GetKeyboardState(NULL);
-    int8_t playerDirection = 0;
-    static Vector2f playerVelocity(0, 10);
+    int playerDirection = 0;
+    Vector2f playerVelocity(0, 1.02);
 
     // Player Movement
     if (currentKeySates[SDL_SCANCODE_W])
@@ -95,7 +100,7 @@ void Pong::handleInputs()
     }
 
     // TODO: Add deltatime
-    m_player.position += playerVelocity * playerDirection;
+    m_player.position += playerVelocity * playerDirection * dt;
 
     clampPosition(m_player);
     clampPosition(m_bot);
@@ -125,18 +130,20 @@ void Pong::objectsSetup()
     m_player.size.y = (50 * screenHeightFloat) / 200;
     m_bot.size.x = 30 * (screenWidthFloat / 700);
     m_bot.size.y = (50 * screenHeightFloat) / 200;
-    m_ball.size.x = screenWidthFloat / 50;
-    m_ball.size.y = screenHeightFloat / 50;
+
+    // Same so that the image stays a square
+    m_ball.size.x = screenWidthFloat / 20;
+    m_ball.size.y = screenWidthFloat / 20;
 
     // Set initial positions
     m_player.position.x = 0;
     m_bot.position.x = m_screenWidth - m_bot.size.x;
-    m_ball.position.x = screenHeightFloat / 2;
+    m_ball.position.x = (screenWidthFloat / 2) - (m_ball.size.y / 2);
 
     // Render in middle
     m_player.position.y = (screenHeightFloat / 2) - (m_player.size.y / 2);
     m_bot.position.y = (screenHeightFloat / 2) - (m_bot.size.y / 2);
-    m_ball.position.y = 50;
+    m_ball.position.y = (screenHeightFloat / 2) - (m_ball.size.y / 2);
 }
 
 void Pong::clampPosition(Player &p_player)
