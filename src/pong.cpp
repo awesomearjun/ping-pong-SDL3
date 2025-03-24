@@ -60,7 +60,7 @@ void Pong::execute()
         renderObjects();
 
         float buffer2 = SDL_GetTicks();
-        dt = buffer2 - buffer1;
+        deltaTime = buffer2 - buffer1;
     }
 }
 
@@ -86,21 +86,8 @@ void Pong::handleInputs()
     }
 
     const bool *currentKeySates = SDL_GetKeyboardState(NULL);
-    int playerDirection = 0;
-    Vector2f playerVelocity(0, 1.02);
 
-    // Player Movement
-    if (currentKeySates[SDL_SCANCODE_W])
-    {
-        playerDirection = -1;
-    }
-    if (currentKeySates[SDL_SCANCODE_S])
-    {
-        playerDirection = 1;
-    }
-
-    // TODO: Add deltatime
-    m_player.position += playerVelocity * playerDirection * dt;
+    m_player.update(deltaTime, currentKeySates);
 
     clampPosition(m_player);
     clampPosition(m_bot);

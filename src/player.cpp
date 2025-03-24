@@ -11,6 +11,25 @@ Player::Player()
     size.y = 0;
 }
 
+void Player::update(float p_deltaTime, const bool *p_keyStates)
+{
+    int playerDirection = 0;
+    Vector2f playerVelocity(0, 1.02);
+
+    // Player Movement
+    if (p_keyStates[SDL_SCANCODE_W])
+    {
+        playerDirection = -1;
+    }
+    if (p_keyStates[SDL_SCANCODE_S])
+    {
+        playerDirection = 1;
+    }
+
+    // TODO: Add deltatime
+    position += playerVelocity * playerDirection * p_deltaTime;
+}
+
 void Player::render(SDL_Renderer *p_renderer)
 {
     SDL_FRect renderedRect;

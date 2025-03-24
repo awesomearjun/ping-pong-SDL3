@@ -29,5 +29,5 @@ class Pong
 
     bool m_gameOver;
     int m_screenWidth, m_screenHeight;
-    float dt;
+    float deltaTime;
 };

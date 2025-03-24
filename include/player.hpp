@@ -10,6 +10,7 @@ class Player
     Player();
     ~Player() = default;
 
+    void update(float p_deltaTime, const bool *p_keyStates);
     void render(SDL_Renderer *p_renderer);
 
     Vector2f position;
