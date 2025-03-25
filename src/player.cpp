@@ -26,7 +26,6 @@ void Player::update(float p_deltaTime, const bool *p_keyStates)
         playerDirection = 1;
     }
 
-    // TODO: Add deltatime
     position += playerVelocity * playerDirection * p_deltaTime;
 }
 

@@ -5,10 +5,18 @@
 #include <unistd.h>
 
 #include "utils.hpp"
+#include "vector.hpp"
+
+Ball::Ball()
+    : ballVelocity(0.1, 0.2) {}
+
+void Ball::update(float p_deltaTime)
+{
+    position += ballVelocity * p_deltaTime;
+}
 
 void Ball::render(SDL_Renderer *p_renderer)
 {
-    // TODO: Make sprite of res/gfx/img.png
     char tmp[256];
     getcwd(tmp, 256);
 

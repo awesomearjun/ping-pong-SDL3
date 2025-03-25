@@ -88,9 +88,9 @@ void Pong::handleInputs()
     const bool *currentKeySates = SDL_GetKeyboardState(NULL);
 
     m_player.update(deltaTime, currentKeySates);
+    m_ball.update(deltaTime);
 
-    clampPosition(m_player);
-    clampPosition(m_bot);
+    clampPositions();
 }
 
 void Pong::renderObjects()
@@ -133,16 +133,33 @@ void Pong::objectsSetup()
     m_ball.position.y = (screenHeightFloat / 2) - (m_ball.size.y / 2);
 }
 
-void Pong::clampPosition(Player &p_player)
+void Pong::clampPositions()
 {
-    uint32_t relativeHeight = m_screenHeight - p_player.size.y;
+    // M_Player size == M_Bot size
+    uint32_t relativeHeight = m_screenHeight - m_player.size.y;
 
-    if (p_player.position.y <= 0)
+    if (m_player.position.y <= 0)
     {
-        p_player.position.y = 0;
+        m_player.position.y = 0;
     }
-    if (p_player.position.y > relativeHeight)
+    if (m_player.position.y > relativeHeight)
     {
-        p_player.position.y = relativeHeight;
+        m_player.position.y = relativeHeight;
+    }
+
+    if (m_bot.position.y <= 0)
+    {
+        m_bot.position.y = 0;
+    }
+    if (m_bot.position.y > relativeHeight)
+    {
+        m_bot.position.y = relativeHeight;
+    }
+
+    uint32_t relativeBallHeight = m_screenHeight - m_ball.size.y;
+
+    if (m_ball.position.y <= 0 || m_ball.position.y > relativeBallHeight)
+    {
+        m_ball.ballVelocity.y *= -1;
     }
 }

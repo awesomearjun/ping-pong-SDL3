@@ -7,13 +7,15 @@
 class Ball
 {
   public:
-    Ball() = default;
+    Ball();
     ~Ball() = default;
 
+    void update(float p_deltaTime);
     void render(SDL_Renderer *p_renderer);
 
     Vector2f position;
     Vector2f size;
+    Vector2f ballVelocity;
 
   private:
     SDL_Surface *m_surface;
